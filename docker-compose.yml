@@ -1,0 +1,36 @@
+
+
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=development
+    restart: unless-stopped
+    networks:
+      - rede_local
+
+  db:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=gestao_db
+    volumes:
+      - dados_mysql:/var/lib/mysql
+    networks:
+      - rede_local
+
+volumes:
+  dados_mysql:
+
+networks:
+  rede_local:
